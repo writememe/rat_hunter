@@ -33,8 +33,9 @@ from rat_hunter.shared.helpers import (
     convert_date_to_local_time,
     convert_updated_at_to_local_time,
     convert_created_at_to_local_time,
+    convert_updated_at_to_mins_ago,
 )  # noqa (import not at top)
-from rat_hunter.exporters.files import export_to_csv
+from rat_hunter.exporters.files import export_to_csv  # noqa (import not at top)
 
 
 class RATResults(object):
@@ -123,6 +124,10 @@ class RATResults(object):
             lambda row: convert_created_at_to_local_time(row),
             axis=1,
         )
+        df["last_updated_mins_ago"] = df.apply(
+            lambda row: convert_updated_at_to_mins_ago(row),
+            axis=1,
+        )
         return df
 
     def filter_by_address(self, address: str = "ACT", in_stock: bool = True):
@@ -150,6 +155,7 @@ def example_code():
     with open(rat_file_path, "r") as rat_file:
         rat_data = json.load(rat_file)
 
+    LOGGER.debug(rat_data)
     a = RATResults(online=True)
     # LOGGER.debug(a.data)
     # LOGGER.debug((type(a.data)))

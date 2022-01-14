@@ -7,10 +7,9 @@ import yagmail
 import os
 import sys
 import pandas as pd
-from os import PathLike, environ
-from typing import List, Dict, Any
+from os import environ
+from typing import List, Dict, Any, Optional
 from pretty_html_table import build_table
-from dateutil import tz
 
 # Get path of the current directory under which the settings folder is created
 dirname = os.path.dirname(__file__)
@@ -25,11 +24,7 @@ if repo_base_dir not in sys.path:
 
 from rat_hunter.shared.settings import (
     LOGGER,
-    OUTPUT_DIR,
-    RESULT_DIR,
-    CRED_DIR,
     DEFAULT_CRED_ENV,
-    LOCAL_TZ,
     LOCAL_TZ_NAME,
 )  # noqa (import not at top
 
@@ -115,15 +110,16 @@ def reorder_df_columns(
     email_columns: List[str] = [
         "name",
         "address",
+        "last_updated_mins_ago",
         "price_in_dollars",
         "google_maps_url",
-        "updatedAt_local_time",
-        "createdAt_local_time",
-        "date_local_time",
+        # "updatedAt_local_time",
+        # "createdAt_local_time",
+        # "date_local_time",
         "status",
         "verified",
-        "id",
-        "date",
+        # "id",
+        "date_local_time",
     ],
 ):
     LOGGER.info(f"Pre Dataframe columns: {df.columns.tolist()}")
@@ -138,14 +134,16 @@ def trim_and_reorder_df_columns(
     retained_ordered_columns: List[str] = [
         "name",
         "address",
+        "last_updated_mins_ago",
         "price_in_dollars",
         "google_maps_url",
-        "updatedAt_local_time",
-        "createdAt_local_time",
-        "date_local_time",
+        # "updatedAt_local_time",
+        # "createdAt_local_time",
+        # "date_local_time",
         "status",
         "verified",
-        "id",
+        # "id",
+        # "date_local_time",
     ],
 ) -> pd.DataFrame:
     all_columns = df.columns.tolist()
@@ -161,6 +159,7 @@ def trim_and_reorder_df_columns(
     df = df.reset_index()
     df = df.drop(columns=["index"])
     LOGGER.info(df.head(2))
+    df = df.sort_values(by=["last_updated_mins_ago"])
     return df
 
 
@@ -211,7 +210,7 @@ def parse_results_to_email_content(df, **kwargs: Dict[str, Any]):
         <h3>This data is automatically parsed from the <a href="https://findarat.com.au/">Find a RAT Website</a></p></h3>
       </body>
     </html>
-    """
+    """  # noqa
     # """
     # Replace newline characters so that body formats correctly in HTML email
     # https://github.com/kootenpv/yagmail/issues/116
@@ -221,7 +220,8 @@ def parse_results_to_email_content(df, **kwargs: Dict[str, Any]):
 
 
 def send_notification(
-    to_address_list: List[str],
+    to_address_list: Optional[List[str]] = [],
+    cc_address_list: Optional[List[str]] = [],
     subject: str = "RATs have been found!",
     body: str = "",
 ):
@@ -230,6 +230,7 @@ def send_notification(
     # Send the email
     email_result = yag.send(
         to=to_address_list,
+        cc=cc_address_list,
         subject=subject,
         contents=[body],
     )
@@ -238,18 +239,15 @@ def send_notification(
 
 def dispatch_html_email(
     df_file_path,
-    to_address_list: List[str] = ["ratreceivers@gmail.com"],
+    to_address_list: Optional[List[str]] = [],
+    cc_address_list: Optional[List[str]] = [],
     **kwargs,
 ):
     df = pd.read_csv(df_file_path)
-    stats = {
-        "last_run": "2021/01/14 14:00",
-        "search_query": "VIC",
-        "timezone": "AEDT",
-    }
     email_subject, html_body = parse_results_to_email_content(df=df, kwargs=kwargs)
     send_notification(
         to_address_list=to_address_list,
+        cc_address_list=cc_address_list,
         subject=email_subject,
         body=html_body,
     )

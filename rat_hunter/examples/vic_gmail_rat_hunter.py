@@ -13,16 +13,20 @@ BASE_CODE_DIR = os.path.abspath(os.path.join(dirname, "..", ".."))
 sys.path.append(BASE_CODE_DIR)
 
 # Import the RatResult Class
-from rat_hunter.ingestors.base.base import RATResults
+from rat_hunter.ingestors.base.base import RATResults  # noqa (import not at top)
 
 # Import the Gmail sender functions
-from rat_hunter.exporters.gmail import dispatch_html_email
+from rat_hunter.exporters.gmail import dispatch_html_email  # noqa (import not at top)
 
 # Import to CSV exporter function
-from rat_hunter.exporters.files import export_to_csv
+from rat_hunter.exporters.files import export_to_csv  # noqa (import not at top)
 
 # Import some shared settings (optional)
-from rat_hunter.shared.settings import RESULT_DIR, TIMESTAMP, LOCAL_TZ_NAME
+from rat_hunter.shared.settings import (
+    RESULT_DIR,
+    TIMESTAMP,
+    LOCAL_TZ_NAME,
+)  # noqa (import not at top)
 
 """
 Example code block after imports
@@ -50,8 +54,8 @@ metadata = {
     "timezone": LOCAL_TZ_NAME,
 }
 # Setup your recipients to recieve the email as a list
-to_address_list = ["ratreceivers@gmail.com"]
+cc_address_list = ["rathunters@gmail.com"]
 # Send it!
 dispatch_html_email(
-    df_file_path=file_path, to_address_list=to_address_list, kwargs=metadata
+    df_file_path=file_path, cc_address_list=cc_address_list, kwargs=metadata
 )

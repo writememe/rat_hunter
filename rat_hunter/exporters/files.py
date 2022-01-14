@@ -21,7 +21,6 @@ if repo_base_dir not in sys.path:
 
 from rat_hunter.shared.settings import (
     LOGGER,
-    OUTPUT_DIR,
     RESULT_DIR,
 )  # noqa (import not at top
 
