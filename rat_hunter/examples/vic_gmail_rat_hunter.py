@@ -36,7 +36,7 @@ address_query = "3226"
 address_query = "Australia"
 address_query = "Geelong"
 """
-address_query = "VIC"
+address_query = "VIC 3"
 # Apply the filter and return the results as a Pandas dataframe
 vic_data = find_a_rat_data.filter_by_address(address=address_query)
 file_name = "vic_rat_results.csv"

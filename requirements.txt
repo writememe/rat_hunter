@@ -1,0 +1,8 @@
+black
+requests
+pandas
+pydantic
+python-dotenv
+# Optional packages
+yagmail[all]
+pretty_html_table
