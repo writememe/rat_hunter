@@ -130,20 +130,27 @@ class RATResults(object):
         )
         return df
 
-    def filter_by_address(self, address: str = "ACT", in_stock: bool = True):
+    def filter_by_address(
+        self,
+        address: str = "",
+        in_stock: bool = True,
+    ):
         raw_df = self.df
         IN_STOCK_STATUSES = ["IN_STOCK", "LOW_STOCK"]
         NO_STOCK_STATUSES = ["NO_STOCK"]
+        LOGGER.debug(f"Performing address search for: {address}")
         if in_stock:
             df = raw_df[
-                (raw_df["address"].str.lower().str.contains(address.lower()))
+                (raw_df["address"].str.contains(pat=address, case=False))
                 & (raw_df["status"].isin(IN_STOCK_STATUSES))
             ]
+            LOGGER.critical(f"filter by address: {df}")
         else:
             df = raw_df[
-                (raw_df["address"].str.lower().str.contains(address.lower()))
+                (raw_df["address"].str.contains(pat=address, case=False))
                 & (raw_df["status"].isin(NO_STOCK_STATUSES))
             ]
+            LOGGER.critical(f"filter by address: {df}")
         return df
 
 

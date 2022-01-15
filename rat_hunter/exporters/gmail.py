@@ -215,7 +215,7 @@ def parse_results_to_email_content(df, **kwargs: Dict[str, Any]):
     # Replace newline characters so that body formats correctly in HTML email
     # https://github.com/kootenpv/yagmail/issues/116
     html_body = html_body.replace("\n", "")
-    LOGGER.info(f"HTML BODY: {html_body}")
+    LOGGER.debug(f"HTML BODY: {html_body}")
     return email_subject, html_body
 
 

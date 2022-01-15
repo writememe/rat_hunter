@@ -101,6 +101,6 @@ def convert_updated_at_to_mins_ago(row):
     total_seconds = time_delta.total_seconds()
     minutes = round(number=(total_seconds / 60))
     # diff_in_mins = calculate_diff_in_minutes(other_time=local_update_at)
-    LOGGER.info(f"Diff in mins: {minutes}")
+    LOGGER.debug(f"Diff in mins: {minutes}")
     # diff_mins_string = f"{diff_in_mins} minutes ago"
     return minutes
