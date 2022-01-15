@@ -58,7 +58,7 @@ gippsland_postcodes = [
     "3995",
     "3996",
 ]
-address_query = f"({'|'.join(gippsland_postcodes)})"
+gipps_address_query = f"({'|'.join(gippsland_postcodes)})"
 geelong_area_postcodes = [
     "3212",
     "3214",
@@ -78,8 +78,20 @@ geelong_area_postcodes = [
     "3340",
 ]
 geelong_address_query = f"({'|'.join(geelong_area_postcodes)})"
+darebin_area_postcodes = [
+    "3070",
+    "3071",
+    "3072",
+    "3073",
+    "3078",
+]
+darebin_address_query = f"({'|'.join(darebin_area_postcodes)})"
+
+
 # Apply the filter and return the results as a Pandas dataframe
-gipps_data = find_a_rat_data.filter_by_address(address=address_query, in_stock=True)
+gipps_data = find_a_rat_data.filter_by_address(
+    address=gipps_address_query, in_stock=True
+)
 file_name = "gippsland_rat_results.csv"
 file_path = os.path.join(RESULT_DIR, file_name)
 # Save the results offline to a CSV file
@@ -87,7 +99,7 @@ vic_data_df = export_to_csv(df=gipps_data, file_name=file_name, output_dir=RESUL
 # Compile the metadata needed for the email notification (all dynamic)
 metadata = {
     "last_run": TIMESTAMP,
-    "search_query": address_query,
+    "search_query": gipps_address_query,
     "timezone": LOCAL_TZ_NAME,
 }
 # Setup your recipients to recieve the email as a list
@@ -114,4 +126,26 @@ geel_cc_address_list = ["danielfjteycheney@gmail.com"]
 # Send it!
 dispatch_html_email(
     df_file_path=file_path, cc_address_list=geel_cc_address_list, kwargs=metadata
+)
+
+darebin_data = find_a_rat_data.filter_by_address(
+    address=geelong_address_query, in_stock=True
+)
+file_name = "darebin_rat_results.csv"
+file_path = os.path.join(RESULT_DIR, file_name)
+# Save the results offline to a CSV file
+geel_data_df = export_to_csv(
+    df=darebin_data, file_name=file_name, output_dir=RESULT_DIR
+)
+# Compile the metadata needed for the email notification (all dynamic)
+metadata = {
+    "last_run": TIMESTAMP,
+    "search_query": darebin_address_query,
+    "timezone": LOCAL_TZ_NAME,
+}
+# Setup your recipients to recieve the email as a list
+darebin_cc_address_list = ["danielfjteycheney@gmail.com"]
+# Send it!
+dispatch_html_email(
+    df_file_path=file_path, cc_address_list=darebin_cc_address_list, kwargs=metadata
 )
