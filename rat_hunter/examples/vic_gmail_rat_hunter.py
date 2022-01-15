@@ -129,7 +129,7 @@ dispatch_html_email(
 )
 
 darebin_data = find_a_rat_data.filter_by_address(
-    address=geelong_address_query, in_stock=True
+    address=darebin_address_query, in_stock=True
 )
 file_name = "darebin_rat_results.csv"
 file_path = os.path.join(RESULT_DIR, file_name)
