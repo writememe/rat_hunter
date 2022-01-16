@@ -144,13 +144,11 @@ class RATResults(object):
                 (raw_df["address"].str.contains(pat=address, case=False))
                 & (raw_df["status"].isin(IN_STOCK_STATUSES))
             ]
-            LOGGER.critical(f"filter by address: {df}")
         else:
             df = raw_df[
                 (raw_df["address"].str.contains(pat=address, case=False))
                 & (raw_df["status"].isin(NO_STOCK_STATUSES))
             ]
-            LOGGER.critical(f"filter by address: {df}")
         return df
 
 

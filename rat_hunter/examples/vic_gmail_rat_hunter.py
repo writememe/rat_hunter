@@ -143,7 +143,7 @@ metadata = {
     "search_query": darebin_address_query,
     "timezone": LOCAL_TZ_NAME,
 }
-# Setup your recipients to recieve the email as a list
+# Setup your recipients to receive the email as a list
 darebin_cc_address_list = ["danielfjteycheney@gmail.com"]
 # Send it!
 dispatch_html_email(
