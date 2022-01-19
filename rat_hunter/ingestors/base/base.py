@@ -13,7 +13,6 @@ import os
 import sys
 import json
 
-# from pydantic import BaseModel
 from os import path
 
 # Get path of the current directory under which the settings folder is created
