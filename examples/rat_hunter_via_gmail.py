@@ -150,20 +150,20 @@ for the outputted CSV file
 send_postcode_based_alert(
     postcodes=darebin_area_postcodes,
     common_search_name="darebin",
-    cc_address_list=["danielfjteycheney@gmail.com"],
+    cc_address_list=["scomo@gmail.com"],
 )
 send_postcode_based_alert(
     postcodes=gippsland_postcodes,
     common_search_name="gippsland",
-    cc_address_list=["danielfjteycheney@gmail.com"],
+    cc_address_list=["danandrews@gmail.com"],
 )
 send_postcode_based_alert(
     postcodes=gippsland_postcodes,
     common_search_name="geelong",
-    cc_address_list=["danielfjteycheney@gmail.com"],
+    cc_address_list=["chiefhealthofficer@gmail.com"],
 )
 send_postcode_based_alert(
     postcodes=whittlesea_melbourne_area_postcodes,
     common_search_name="whittlesea_melbourne",
-    cc_address_list=["danielfjteycheney@gmail.com"],
+    cc_address_list=["someoneimportant@gmail.com"],
 )
