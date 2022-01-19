@@ -1,3 +1,3 @@
 # Optional packages
-yagmail[all]==0.14.261
+yagmail[all]==0.15.277
 pretty_html_table==0.9.15
