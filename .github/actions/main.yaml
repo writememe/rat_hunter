@@ -1,6 +1,6 @@
 ---
 # Github actions workflow file
-name: motherstarter
+name: rat_hunter - linting and testing
 
 on:  # yamllint disable rule:truthy
     push:

@@ -86,7 +86,7 @@ class RATResults(object):
         self,
         json_data,
         file_name: str = "rat_data.json",
-        output_dir: Union[str, PathLike[Any]] = DATA_OUTPUT_DIR,
+        output_dir: Union[str, PathLike] = DATA_OUTPUT_DIR,
     ):
         json_file_path = path.abspath(os.path.join(output_dir, file_name))
         with open(json_file_path, "w+") as json_file:
