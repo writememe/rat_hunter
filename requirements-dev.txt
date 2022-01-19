@@ -8,3 +8,6 @@ pandas
 python-dotenv
 mypy
 nox
+types-python-dateutil
+types-requests
+data-science-types

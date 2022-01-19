@@ -1,5 +1,6 @@
 from datetime import datetime
 from dateutil import tz
+from typing import Any
 
 # Import shared settings
 from rat_hunter.shared.settings import (
@@ -9,7 +10,7 @@ from rat_hunter.shared.settings import (
 )  # noqa (import not at top)
 
 
-def add_google_map_address_url(row) -> str:
+def add_google_map_address_url(row: Any) -> str:
     """
     Functions to categorise all types of payments
     by assessing each row using a string match.
@@ -21,7 +22,7 @@ def add_google_map_address_url(row) -> str:
     return google_maps_url
 
 
-def add_price_in_dollars(row) -> int:
+def add_price_in_dollars(row: Any) -> int:
     """
     Functions to categorise all types of payments
     by assessing each row using a string match.
@@ -32,7 +33,7 @@ def add_price_in_dollars(row) -> int:
     return dollars
 
 
-def convert_date_to_local_time(row):
+def convert_date_to_local_time(row: Any):
     # Assign UTC time to a variable
     from_zone = tz.tzutc()
     # Auto-detect local machine time
@@ -46,7 +47,7 @@ def convert_date_to_local_time(row):
     return local_date
 
 
-def convert_updated_at_to_local_time(row):
+def convert_updated_at_to_local_time(row: Any):
     # Assign UTC time to a variable
     from_zone = tz.tzutc()
     # Auto-detect local machine time
@@ -60,7 +61,7 @@ def convert_updated_at_to_local_time(row):
     return local_update_at
 
 
-def convert_created_at_to_local_time(row):
+def convert_created_at_to_local_time(row: Any):
     # Assign UTC time to a variable
     from_zone = tz.tzutc()
     # Auto-detect local machine time

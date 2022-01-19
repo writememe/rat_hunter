@@ -8,7 +8,7 @@ from os import PathLike
 import requests
 from requests.exceptions import HTTPError
 import pandas as pd
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Union
 import os
 import sys
 import json
@@ -86,7 +86,7 @@ class RATResults(object):
         self,
         json_data,
         file_name: str = "rat_data.json",
-        output_dir: PathLike = DATA_OUTPUT_DIR,
+        output_dir: Union[str, PathLike[Any]] = DATA_OUTPUT_DIR,
     ):
         json_file_path = path.abspath(os.path.join(output_dir, file_name))
         with open(json_file_path, "w+") as json_file:
@@ -97,7 +97,7 @@ class RATResults(object):
         """
         Convert the data (list of dictionaries) into a Pandas dataframe.
         """
-        return pd.DataFrame.from_records(data)
+        return pd.DataFrame.from_records(data)  # type:ignore
 
     def augment_normalised_address_field(self, df):
         df["address_lower_case"] = df["address"].str.lower()

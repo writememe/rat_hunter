@@ -61,7 +61,7 @@ gmail_pword = environ.get("GMAIL_PWORD")
 
 
 def authorise_yagmail_client(
-    gmail_acc: str = gmail_acc, gmail_pword: str = gmail_pword
+    gmail_acc: Optional[str] = gmail_acc, gmail_pword: Optional[str] = gmail_pword
 ):
     """
     Instantiate a connection to the yagmail client
