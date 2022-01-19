@@ -5,7 +5,6 @@ yamllint
 bandit
 requests
 pandas
-pydantic
 python-dotenv
 mypy
 nox
