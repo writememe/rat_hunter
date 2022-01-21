@@ -8,7 +8,7 @@ import os
 import sys
 import pandas as pd
 from os import environ
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 from pretty_html_table import build_table
 
 # Get path of the current directory under which the settings folder is created
@@ -61,8 +61,8 @@ gmail_pword = environ.get("GMAIL_PWORD")
 
 
 def authorise_yagmail_client(
-    gmail_acc: str = gmail_acc, gmail_pword: str = gmail_pword
-):
+    gmail_acc: Optional[str] = gmail_acc, gmail_pword: Optional[str] = gmail_pword
+) -> yagmail.SMTP:
     """
     Instantiate a connection to the yagmail client
     and return for use in other functions.
@@ -79,7 +79,7 @@ def authorise_yagmail_client(
 
 
 def drop_df_columns(
-    df,
+    df: pd.DataFrame,
     drop_columns: List[str] = [
         "createdAt",
         "updatedAt",
@@ -96,14 +96,14 @@ def drop_df_columns(
         "lat",
         "lng",
     ],
-):
+) -> pd.DataFrame:
     LOGGER.info(f"Dropping '{drop_columns}' from HTML email content")
     df = df.drop(columns=drop_columns)
     return df
 
 
 def reorder_df_columns(
-    df,
+    df: pd.DataFrame,
     email_columns: List[str] = [
         "name",
         "address",
@@ -114,7 +114,7 @@ def reorder_df_columns(
         "verified",
         "date_local_time",
     ],
-):
+) -> pd.DataFrame:
     LOGGER.debug(f"Pre Dataframe columns: {df.columns.tolist()}")
     df = df.reindex(columns=email_columns)
     LOGGER.debug(f"Post Dataframe columns: {df.columns.tolist()}")
@@ -122,7 +122,7 @@ def reorder_df_columns(
 
 
 def trim_and_reorder_df_columns(
-    df,
+    df: pd.DataFrame,
     retained_ordered_columns: List[str] = [
         "name",
         "address",
@@ -149,11 +149,9 @@ def trim_and_reorder_df_columns(
     return df
 
 
-def generate_html_base_email_body(**kwargs):
-    pass
-
-
-def parse_results_to_email_content(df, **kwargs: Dict[str, Any]):
+def parse_results_to_email_content(
+    df: pd.DataFrame, **kwargs: Dict[str, Any]
+) -> Tuple[str, str]:
     LOGGER.debug(f"KWARGS supplied into email content: {kwargs}")
     try:
         last_run = kwargs["kwargs"]["kwargs"]["last_run"]
@@ -204,7 +202,7 @@ def parse_results_to_email_content(df, **kwargs: Dict[str, Any]):
     return email_subject, html_body
 
 
-def compile_no_results_email(**kwargs: Dict[str, Any]):
+def compile_no_results_email(**kwargs: Dict[str, Any]) -> Tuple[str, str]:
     try:
         last_run = kwargs["kwargs"]["kwargs"]["last_run"]
         local_timezone = kwargs["kwargs"]["kwargs"]["timezone"]
@@ -243,7 +241,7 @@ def send_notification(
     cc_address_list: Optional[List[str]] = [],
     subject: str = "RATs have been found!",
     body: str = "",
-):
+) -> None:
     # Initialise the yagmail client so we can send the email
     yag = authorise_yagmail_client(gmail_acc, gmail_pword)
     # Send the email
@@ -291,12 +289,12 @@ def send_notification(
 
 
 def dispatch_html_email(
-    df_file_path,
+    df_file_path: Any,
     to_address_list: Optional[List[str]] = [],
     cc_address_list: Optional[List[str]] = [],
     empty_notification: bool = False,
-    **kwargs,
-):
+    **kwargs: Dict[str, Any],
+) -> None:
     df = pd.read_csv(df_file_path)
     if df.empty and empty_notification:
         email_subject, html_body = compile_no_results_email(kwargs=kwargs)

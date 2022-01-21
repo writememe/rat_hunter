@@ -25,7 +25,7 @@ yamllint:	## Perform YAML linting using yamllint
 
 bandit:	## Perform python code security checks using bandit
 	@echo "--- Performing bandit code security scanning ---"
-	bandit motherstarter/ -v --exclude ./venv --recursive --format json --verbose -s B101
+	bandit rat_hunter/ -v --exclude ./venv --recursive --format json --verbose -s B101
 
 .PHONY: venv
 venv: ## Install virtualenv, create virtualenv, install requirements for Python 3
@@ -42,4 +42,10 @@ pytest-cov: ## Perform local testing using pytest and generate coverage report
 	@echo "--- Performing pytest (coverage report) ---"
 	pytest --cov=./ --cov-report=xml
 
+mypy: ## Perform mypy type hinting checks
+	@echo "--- mypy type hinting checks ---"
+	mypy rat_hunter/. examples/.
 
+mypy-strict: ## Perform mypy strict type hinting checks
+	@echo "--- mypy strict type hinting checks ---"
+	mypy rat_hunter/. examples/. --strict

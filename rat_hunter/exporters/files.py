@@ -7,6 +7,7 @@ import os
 import sys
 from pandas import DataFrame
 from os import PathLike
+from typing import Union
 
 # Get path of the current directory under which the settings folder is created
 dirname = os.path.dirname(__file__)
@@ -26,8 +27,10 @@ from rat_hunter.shared.settings import (
 
 
 def export_to_csv(
-    df: DataFrame, file_name: str = "data.csv", output_dir: PathLike = RESULT_DIR
-):
+    df: DataFrame,
+    file_name: str = "data.csv",
+    output_dir: Union[str, PathLike] = RESULT_DIR,  # type: ignore
+) -> None:
     """
     Export Pandas dataframe to a CSV file.
 

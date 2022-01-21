@@ -1,5 +1,6 @@
 from datetime import datetime
 from dateutil import tz
+from typing import Any
 
 # Import shared settings
 from rat_hunter.shared.settings import (
@@ -9,7 +10,7 @@ from rat_hunter.shared.settings import (
 )  # noqa (import not at top)
 
 
-def add_google_map_address_url(row) -> str:
+def add_google_map_address_url(row: Any) -> str:
     """
     Functions to categorise all types of payments
     by assessing each row using a string match.
@@ -21,18 +22,18 @@ def add_google_map_address_url(row) -> str:
     return google_maps_url
 
 
-def add_price_in_dollars(row) -> int:
+def add_price_in_dollars(row: Any) -> float:
     """
     Functions to categorise all types of payments
     by assessing each row using a string match.
 
     :param row: The pandas row to be categories
     """
-    dollars = row["priceInCents"] / 100
+    dollars = float(row["priceInCents"] / 100)
     return dollars
 
 
-def convert_date_to_local_time(row):
+def convert_date_to_local_time(row: Any) -> datetime:
     # Assign UTC time to a variable
     from_zone = tz.tzutc()
     # Auto-detect local machine time
@@ -46,7 +47,7 @@ def convert_date_to_local_time(row):
     return local_date
 
 
-def convert_updated_at_to_local_time(row):
+def convert_updated_at_to_local_time(row: Any) -> datetime:
     # Assign UTC time to a variable
     from_zone = tz.tzutc()
     # Auto-detect local machine time
@@ -60,7 +61,7 @@ def convert_updated_at_to_local_time(row):
     return local_update_at
 
 
-def convert_created_at_to_local_time(row):
+def convert_created_at_to_local_time(row: Any) -> datetime:
     # Assign UTC time to a variable
     from_zone = tz.tzutc()
     # Auto-detect local machine time
@@ -75,18 +76,16 @@ def convert_created_at_to_local_time(row):
 
 
 def calculate_diff_in_minutes(
-    other_time,
-    timestamp=TIMESTAMP,
-):
-    # LOGGER.info(f"OTHER TIME: {(other_time)}")
-    # LOGGER.info(f"TIMESTAMP: {(timestamp)}")
+    other_time: Any,
+    timestamp: Any = TIMESTAMP,
+) -> int:
     time_delta = timestamp - other_time
     total_seconds = time_delta.total_seconds()
     minutes = round(number=(total_seconds / 60))
     return minutes
 
 
-def convert_updated_at_to_mins_ago(row):
+def convert_updated_at_to_mins_ago(row: Any) -> int:
     # Assign UTC time to a variable
     from_zone = tz.tzutc()
     # Auto-detect local machine time

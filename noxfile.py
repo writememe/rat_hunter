@@ -39,7 +39,14 @@ def lint(session):
     )
     # Deliberately commented out for now
     # https://github.com/writememe/rat_hunter/issues/1
-    # session.run("python", "-m", "mypy", "--strict", "motherstarter/")
+    session.run(
+        "python",
+        "-m",
+        "mypy",
+        "rat_hunter/",
+        "examples/",
+        "--strict",
+    )
 
 
 @nox.session(python=["3.8", "3.9"])
@@ -123,7 +130,7 @@ def bandit(session):
         "--recursive",
         "--format",
         "json",
-        "motherstarter/",
+        "rat_hunter/",
         "--verbose",
         "-s",
         "B101",
@@ -145,7 +152,14 @@ def mypy(session):
         N/A
     """
     session.install("-r", "requirements.txt")
-    session.run("python", "-m", "mypy", "--strict", "rat_hunter/", "examples/")
+    session.run(
+        "python",
+        "-m",
+        "mypy",
+        "rat_hunter/",
+        "examples/",
+        "--strict",
+    )
 
 
 @nox.session(python=["3.8", "3.9"])

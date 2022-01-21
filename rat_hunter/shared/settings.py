@@ -80,19 +80,19 @@ class Logger:
     For example, instead of doing Logger.logger.info, we can do Logger.info instead
     """
 
-    def debug(self, message: str):
+    def debug(self, message: str) -> None:
         self.logger.debug(message)
 
-    def info(self, message: str):
+    def info(self, message: str) -> None:
         self.logger.info(message)
 
-    def warning(self, message: str):
+    def warning(self, message: str) -> None:
         self.logger.warning(message)
 
-    def error(self, message: str):
+    def error(self, message: str) -> None:
         self.logger.debug(message)
 
-    def critical(self, message: str):
+    def critical(self, message: str) -> None:
         self.logger.critical(message)
 
 
