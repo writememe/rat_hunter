@@ -18,6 +18,9 @@ sys.path.append(BASE_CODE_DIR)
 
 # Import the RatResult Class
 from rat_hunter.ingestors.base.base import RATResults  # noqa (import not at top)
+from rat_hunter.ingestors.au.findarat.findarat import (
+    FindARATResults,
+)  # noqa (import not at top)
 
 # Import the Gmail sender functions
 from rat_hunter.exporters.gmail import dispatch_html_email  # noqa (import not at top)
@@ -31,7 +34,7 @@ from rat_hunter.shared.settings import (
 )  # noqa (import not at top)
 
 # Instantiate a live copy of the findarat data
-find_a_rat_data = RATResults(online=True)
+find_a_rat_data = FindARATResults(online=True)
 # Specify a list of postcodes that you want to query, in this example, its Greater Geelong
 # postcodes
 postcodes = [
@@ -52,7 +55,7 @@ postcodes = [
     "3227",
     "3340",
 ]
-postcode_address_query = f"({'|'.join(postcodes)})"
+postcode_address_query = f"{'|'.join(postcodes)}"
 # Apply the filter and return the results as a Pandas dataframe
 postcode_data = find_a_rat_data.filter_by_address(
     address=postcode_address_query, in_stock=True

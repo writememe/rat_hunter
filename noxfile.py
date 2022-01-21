@@ -45,7 +45,7 @@ def lint(session):
         "mypy",
         "rat_hunter/",
         "examples/",
-        # "--strict",
+        "--strict",
     )
 
 
