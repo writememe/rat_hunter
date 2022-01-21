@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "examples/rat_hunter_via_gmail.py", line 22, in <module>
+    from rat_hunter.ingestors.base.base import RATResults  # noqa (import not at top)
+  File "/home/dfjt/programming/rat_hunter/rat_hunter/ingestors/base/base.py", line 37, in <module>
+    from rat_hunter.exporters.files import export_to_csv  # noqa (import not at top)
+  File "/home/dfjt/programming/rat_hunter/rat_hunter/exporters/files.py", line 32, in <module>
+    output_dir: Union[str, PathLike[Any]] = RESULT_DIR,
+TypeError: 'ABCMeta' object is not subscriptable

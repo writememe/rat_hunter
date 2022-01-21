@@ -130,7 +130,7 @@ def bandit(session):
         "--recursive",
         "--format",
         "json",
-        "motherstarter/",
+        "rat_hunter/",
         "--verbose",
         "-s",
         "B101",
