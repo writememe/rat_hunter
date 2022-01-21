@@ -1,5 +1,6 @@
 """
-
+This module contains a series of functions for exporting
+RAT results via Gmail
 """
 # Import modules
 from dotenv import load_dotenv
@@ -55,7 +56,7 @@ for variables in environment_variables:
             f"Environmental variable: {variables} is NOT set, exiting script."
         )
         sys.exit(1)
-
+# Assign environmental variables to variables, so that they can be used later on
 gmail_acc = environ.get("GMAIL_ACC")
 gmail_pword = environ.get("GMAIL_PWORD")
 
@@ -66,6 +67,7 @@ def authorise_yagmail_client(
     """
     Instantiate a connection to the yagmail client
     and return for use in other functions.
+
     Args:
         gmail_acc: The Gmail username used to login to your account.
         gmail_pword: The Gmail password used to login to your account.
@@ -97,6 +99,18 @@ def drop_df_columns(
         "lng",
     ],
 ) -> pd.DataFrame:
+    """
+    Take a Pandas dataframe and drop (a.k.a remove) those columns from the dataframe
+    and return for use in other functions.
+
+    Args:
+        df: The Pandas dataframe to be modified.
+        drop_columns: List of columns to be dropped.
+    Raises:
+        N/A
+    Returns:
+        df: The Pandas dataframe after it has been modified.
+    """
     LOGGER.info(f"Dropping '{drop_columns}' from HTML email content")
     df = df.drop(columns=drop_columns)
     return df
@@ -115,6 +129,18 @@ def reorder_df_columns(
         "date_local_time",
     ],
 ) -> pd.DataFrame:
+    """
+    Take a Pandas dataframe and reorder the columns in the order specified by the list
+    of supplied columns.
+
+    Args:
+        df: The Pandas dataframe to be modified.
+        email_columns: List of columns in the order that they are desired.
+    Raises:
+        N/A
+    Returns:
+        df: The Pandas dataframe after it has been modified.
+    """
     LOGGER.debug(f"Pre Dataframe columns: {df.columns.tolist()}")
     df = df.reindex(columns=email_columns)
     LOGGER.debug(f"Post Dataframe columns: {df.columns.tolist()}")
@@ -134,6 +160,26 @@ def trim_and_reorder_df_columns(
         "date_local_time",
     ],
 ) -> pd.DataFrame:
+    """
+    Take a Pandas dataframe and perform the following:
+
+    - Remove columns which aren't explicitly defined in the 'retained_ordered_columns' variable
+    - Reorder the remaining columns in the exact order defined in the 'retained_ordered_columns'
+    variable
+    - Drop the index values (not needed for email usage)
+    - Sort the dataframe entries by 'last_updated_mins_ago', with newest entries being at the top
+
+    This is used to format the dataframe so it's ready for emailing.
+
+    Args:
+        df: The Pandas dataframe to be modified.
+        retained_ordered_columns: List of columns to be retained, and in the order that they are
+        desired
+    Raises:
+        N/A
+    Returns:
+        df: The Pandas dataframe after it has been modified.
+    """
     all_columns = df.columns.tolist()
     remove_columns = list(set(all_columns) - set(retained_ordered_columns))
     LOGGER.debug(f"Original set of dataframe columns: {all_columns}")
@@ -152,7 +198,31 @@ def trim_and_reorder_df_columns(
 def parse_results_to_email_content(
     df: pd.DataFrame, **kwargs: Dict[str, Any]
 ) -> Tuple[str, str]:
-    LOGGER.debug(f"KWARGS supplied into email content: {kwargs}")
+    """
+    Take a Pandas dataframe and perform the following:
+
+    - Format the Pandas dataframe, ready to be emailed
+    - Add HTML table to the Pandas dataframe
+    - Take **kwargs and use those to add some dynamic data to the email
+    - Return the HTML body and email subject, ready for sending
+
+    Args:
+        df: The Pandas dataframe to be parsed over.
+        **kwargs: A dictionary of data which can be used to help formulate the HTML email.
+            Example:
+                metadata = {
+                    "last_run": "2022-01-21 14:05:01.549629+11:00",
+                    "search_query": "3000|3001",
+                    "timezone": "AEDT ",
+                }
+    Raises:
+        N/A
+    Returns:
+        email_subject: A dynamically formed subject string which will indicate how many RATs were
+        found.
+        html_body: A dynamically formed HTML string which will be the body of the email.
+    """
+    LOGGER.debug(f"**kwargs supplied into email content: {kwargs}")
     try:
         last_run = kwargs["kwargs"]["kwargs"]["last_run"]
         local_timezone = kwargs["kwargs"]["kwargs"]["timezone"]
@@ -194,7 +264,6 @@ def parse_results_to_email_content(
       </body>
     </html>
     """  # noqa
-    # """
     # Replace newline characters so that body formats correctly in HTML email
     # https://github.com/kootenpv/yagmail/issues/116
     html_body = html_body.replace("\n", "")
@@ -203,6 +272,27 @@ def parse_results_to_email_content(
 
 
 def compile_no_results_email(**kwargs: Dict[str, Any]) -> Tuple[str, str]:
+    """
+    Compile a HTML email when the RAT hunter finds no results (empty dataframe):
+
+    - Take **kwargs and use those to add some dynamic data to the email
+    - Return the HTML body and email subject, ready for sending
+
+    Args:
+        df: The Pandas dataframe to be parsed over.
+        **kwargs: A dictionary of data which can be used to help formulate the HTML email.
+            Example:
+                metadata = {
+                    "last_run": "2022-01-21 14:05:01.549629+11:00",
+                    "search_query": "3000|3001",
+                    "timezone": "AEDT ",
+                }
+    Raises:
+        N/A
+    Returns:
+        email_subject: A email subject which indicates that no RATs were found.
+        html_body: A dynamically formed HTML string which will be the body of the email.
+    """
     try:
         last_run = kwargs["kwargs"]["kwargs"]["last_run"]
         local_timezone = kwargs["kwargs"]["kwargs"]["timezone"]
@@ -242,6 +332,21 @@ def send_notification(
     subject: str = "RATs have been found!",
     body: str = "",
 ) -> None:
+    """
+    Send an email using yagmail to a list of recipients with a body and subject.
+
+    Args:
+        to_address_list: A list of emails to send an email to.
+            Example:
+                ["rathunter@gmail.com", "noreply@rat.org"]
+        cc_address_list: A list of emails to cc an email to.
+            Example:
+                ["rathunter@gmail.com", "noreply@rat.org"]
+    Raises:
+        N/A
+    Returns:
+        N/A
+    """
     # Initialise the yagmail client so we can send the email
     yag = authorise_yagmail_client(gmail_acc, gmail_pword)
     # Send the email
@@ -295,6 +400,35 @@ def dispatch_html_email(
     empty_notification: bool = False,
     **kwargs: Dict[str, Any],
 ) -> None:
+    """
+    High-level function which performs the following:
+
+    - Reads in a Pandas dataframe from a specified path
+    - Based on the Pandas dataframe having data, it will send a result email
+    - Based on the Pandas dataframe having no data, it can or can not send an email.
+
+    Args:
+        df_file_path: The path to the Pandas dataframe which you want to process.
+        to_address_list: A list of emails to send an email to.
+            Example:
+                ["rathunter@gmail.com", "noreply@rat.org"]
+        cc_address_list: A list of emails to cc an email to.
+            Example:
+                ["rathunter@gmail.com", "noreply@rat.org"]
+        empty_notification: Boolean to toggle sending an email when no results were found in the
+        Pandas dataframe.
+        **kwargs: A dictionary of data which can be used to help formulate the HTML email.
+            Example:
+                metadata = {
+                    "last_run": "2022-01-21 14:05:01.549629+11:00",
+                    "search_query": "3000|3001",
+                    "timezone": "AEDT ",
+                }
+    Raises:
+        N/A
+    Returns:
+        N/A
+    """
     df = pd.read_csv(df_file_path)
     if df.empty and empty_notification:
         email_subject, html_body = compile_no_results_email(kwargs=kwargs)
