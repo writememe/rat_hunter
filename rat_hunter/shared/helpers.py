@@ -1,3 +1,8 @@
+"""
+This module contains a series of helper functions which are consumed in other
+areas of the application
+"""
+# Import modules
 from datetime import datetime
 from dateutil import tz
 from typing import Any
@@ -12,28 +17,46 @@ from rat_hunter.shared.settings import (
 
 def add_google_map_address_url(row: Any) -> str:
     """
-    Functions to categorise all types of payments
-    by assessing each row using a string match.
+    Formulate a Google Maps URL based on the longitude and latitude from the Pandas row.
 
-    :param row: The pandas row to be categories
+    Args:
+        row: The pandas row to be analysed
+    Raises:
+        N/A
+    Returns:
+        google_maps_url: A Google Maps URL which will take you to the RAT location using
+        the longitude and latitude from the Pandas row.
     """
     google_maps_url = f"https://maps.google.com/maps?q={row['lat']},{row['lng']}"
-    # google_maps_url = google_maps_url.replace(" ", "%20%")
     return google_maps_url
 
 
 def add_price_in_dollars(row: Any) -> float:
     """
-    Functions to categorise all types of payments
-    by assessing each row using a string match.
+    Calculate the price in dollars by converting the value of the 'priceInCents` to dollars.
 
-    :param row: The pandas row to be categories
+    Args:
+        row: The pandas row to be analysed
+    Raises:
+        N/A
+    Returns:
+        dollars: The price in dollars, calculated from the price in cents.
     """
     dollars = float(row["priceInCents"] / 100)
     return dollars
 
 
 def convert_date_to_local_time(row: Any) -> datetime:
+    """
+    Convert the 'date' field from UTC time to the application's local time.
+
+    Args:
+        row: The pandas row to be analysed
+    Raises:
+        N/A
+    Returns:
+        local_date: The date converted into the local time.
+    """
     # Assign UTC time to a variable
     from_zone = tz.tzutc()
     # Auto-detect local machine time
@@ -48,6 +71,16 @@ def convert_date_to_local_time(row: Any) -> datetime:
 
 
 def convert_updated_at_to_local_time(row: Any) -> datetime:
+    """
+    Convert the 'updatedAt' field from UTC time to the application's local time.
+
+    Args:
+        row: The pandas row to be analysed
+    Raises:
+        N/A
+    Returns:
+        local_update_at: The date converted into the local time.
+    """
     # Assign UTC time to a variable
     from_zone = tz.tzutc()
     # Auto-detect local machine time
@@ -62,6 +95,16 @@ def convert_updated_at_to_local_time(row: Any) -> datetime:
 
 
 def convert_created_at_to_local_time(row: Any) -> datetime:
+    """
+    Convert the 'createdAt' field from UTC time to the application's local time.
+
+    Args:
+        row: The pandas row to be analysed.
+    Raises:
+        N/A
+    Returns:
+        local_created_at: The date converted into the local time.
+    """
     # Assign UTC time to a variable
     from_zone = tz.tzutc()
     # Auto-detect local machine time
@@ -79,6 +122,17 @@ def calculate_diff_in_minutes(
     other_time: Any,
     timestamp: Any = TIMESTAMP,
 ) -> int:
+    """
+    Calculate the difference in minutes between two timestamps.
+
+    Args:
+        other_time: The time which you want to calculate the difference from.
+        timestamp: A timestamp of when the application was initialised.
+    Raises:
+        N/A
+    Returns:
+        minutes: The numbers of minutes difference.
+    """
     time_delta = timestamp - other_time
     total_seconds = time_delta.total_seconds()
     minutes = round(number=(total_seconds / 60))
@@ -86,6 +140,17 @@ def calculate_diff_in_minutes(
 
 
 def convert_updated_at_to_mins_ago(row: Any) -> int:
+    """
+    Calculate how long ago this entry was last updated, compared to the timestamp
+    of when this application was run.
+
+    Args:
+        row: The pandas row to be analysed.
+    Raises:
+        N/A
+    Returns:
+        minutes: The numbers of minutes ago that this entry was updated.
+    """
     # Assign UTC time to a variable
     from_zone = tz.tzutc()
     # Auto-detect local machine time
@@ -99,7 +164,5 @@ def convert_updated_at_to_mins_ago(row: Any) -> int:
     time_delta = TIMESTAMP - local_update_at
     total_seconds = time_delta.total_seconds()
     minutes = round(number=(total_seconds / 60))
-    # diff_in_mins = calculate_diff_in_minutes(other_time=local_update_at)
     LOGGER.debug(f"Diff in mins: {minutes}")
-    # diff_mins_string = f"{diff_in_mins} minutes ago"
     return minutes

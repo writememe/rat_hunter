@@ -24,11 +24,13 @@ pl.Path(LOG_DIR).mkdir(exist_ok=True, parents=True)
 pl.Path(OUTPUT_DIR).mkdir(exist_ok=True, parents=True)
 pl.Path(RESULT_DIR).mkdir(exist_ok=True, parents=True)
 pl.Path(DATA_OUTPUT_DIR).mkdir(exist_ok=True, parents=True)
-
 CRED_DIR = path.abspath(os.path.join(REPO_ROOT_DIR, "rat_hunter", "backend", "creds"))
+# Specify the default location to find your credentials file for python-dotenv
 DEFAULT_CRED_ENV = path.abspath(os.path.join(CRED_DIR, ".env"))
+"""
+Set some timezone defaults
+"""
 LOCAL_TZ = tz.tzlocal()
-# TIMESTAMP = time.strftime("%Y/%m/%d %H:%M:%S")
 TIMESTAMP = now = datetime.now(LOCAL_TZ)
 NOW = datetime.utcfromtimestamp(time.time())
 LOCAL_TZ_NAME = LOCAL_TZ.tzname(NOW)
