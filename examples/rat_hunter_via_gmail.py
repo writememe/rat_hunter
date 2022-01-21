@@ -19,7 +19,10 @@ BASE_CODE_DIR = os.path.abspath(
 sys.path.append(BASE_CODE_DIR)
 
 # Import the RatResult Class
-from rat_hunter.ingestors.base.base import RATResults  # noqa (import not at top)
+# from rat_hunter.ingestors.base.base import RATResults  # noqa (import not at top)
+from rat_hunter.ingestors.au.findarat.findarat import (
+    FindARATResults,
+)  # noqa (import not at top)
 
 # Import the Gmail sender functions
 from rat_hunter.exporters.gmail import dispatch_html_email  # noqa (import not at top)
@@ -62,10 +65,11 @@ def send_postcode_based_alert(
 
     """
     # Instantiate a live copy of the findarat data
-    find_a_rat_data = RATResults(online=True)
+    # find_a_rat_data = RATResults(online=True)
+    find_a_rat_data = FindARATResults(online=True)
     # Join the list of postcodes into a viable regex string
-    # For example" (3000|3001)
-    postcode_address_query = f"({'|'.join(postcodes)})"
+    # For example: 3000|3001
+    postcode_address_query = f"{'|'.join(postcodes)}"
     # Apply the filter and return the results as a Pandas dataframe
     postcode_data = find_a_rat_data.filter_by_address(
         address=postcode_address_query, in_stock=True
@@ -155,15 +159,15 @@ send_postcode_based_alert(
 send_postcode_based_alert(
     postcodes=gippsland_postcodes,
     common_search_name="gippsland",
-    cc_address_list=["danandrews@gmail.com"],
+    cc_address_list=["scomo@gmail.com"],
 )
 send_postcode_based_alert(
     postcodes=gippsland_postcodes,
     common_search_name="geelong",
-    cc_address_list=["chiefhealthofficer@gmail.com"],
+    cc_address_list=["scomo@gmail.com"],
 )
 send_postcode_based_alert(
     postcodes=whittlesea_melbourne_area_postcodes,
     common_search_name="whittlesea_melbourne",
-    cc_address_list=["someoneimportant@gmail.com"],
+    cc_address_list=["scomo@gmail.com"],
 )

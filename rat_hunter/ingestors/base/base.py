@@ -8,7 +8,7 @@ from os import PathLike
 import requests
 from requests.exceptions import HTTPError
 import pandas as pd
-from typing import Optional, List, Dict, Any, Union
+from typing import Optional, Dict, Any, Union
 import os
 import sys
 import json
@@ -47,8 +47,8 @@ class RATResults(object):
         url: str = "https://sparkling-voice-bdd0.pipelabs-au.workers.dev/",
         ssl_verify: bool = True,
         online: bool = True,
-        offline_data: Optional[List[Dict[str, Any]]] = None,
-        **kwargs,
+        offline_data: Optional[Dict[Any, Any]] = None,
+        **kwargs: Dict[str, Any],
     ):
         self.url = url
         self.ssl_verify = ssl_verify
@@ -57,14 +57,14 @@ class RATResults(object):
             self.save_json_response(json_data=self.data)
         else:
             LOGGER.warning("Using offline data!")
-            self.data = offline_data
+            self.data = offline_data  # type: ignore
 
         self.raw_df = self.convert_data_to_df(data=self.data)
         self.df = self.augment_base_data(df=self.raw_df)
         # Not needed for now
         # self.df = self.augment_normalised_address_field(df=self.data_df)
 
-    def ingest_json_payload(self, url, ssl_verify):
+    def ingest_json_payload(self, url: str, ssl_verify: bool) -> Dict[Any, Any]:
         """
         Ingest the JSON payload from the RAT URL
         """
@@ -84,28 +84,28 @@ class RATResults(object):
 
     def save_json_response(
         self,
-        json_data,
+        json_data: Dict[Any, Any],
         file_name: str = "rat_data.json",
-        output_dir: Union[str, PathLike] = DATA_OUTPUT_DIR,
-    ):
+        output_dir: Union[str, PathLike] = DATA_OUTPUT_DIR,  # type: ignore
+    ) -> None:
         json_file_path = path.abspath(os.path.join(output_dir, file_name))
         with open(json_file_path, "w+") as json_file:
             json.dump(json_data, json_file, indent=2)
         LOGGER.info(f"Data from: {self.url} saved to {json_file.name}")
 
-    def convert_data_to_df(self, data) -> pd.DataFrame:
+    def convert_data_to_df(self, data: Dict[Any, Any]) -> pd.DataFrame:
         """
         Convert the data (list of dictionaries) into a Pandas dataframe.
         """
         return pd.DataFrame.from_records(data)  # type:ignore
 
-    def augment_normalised_address_field(self, df):
+    def augment_normalised_address_field(self, df: pd.DataFrame) -> pd.DataFrame:
         df["address_lower_case"] = df["address"].str.lower()
         LOGGER.info(f"Updated dataframe columns: {df.columns.tolist()}")
         LOGGER.debug(f"Updated dataframe: {df.head(5)}")
         return df
 
-    def augment_base_data(self, df):
+    def augment_base_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """
         Amend the base data with some additional computed columns
         """
@@ -133,7 +133,7 @@ class RATResults(object):
         self,
         address: str = "",
         in_stock: bool = True,
-    ):
+    ) -> pd.DataFrame:
         raw_df = self.df
         IN_STOCK_STATUSES = ["IN_STOCK", "LOW_STOCK"]
         NO_STOCK_STATUSES = ["NO_STOCK"]
@@ -151,7 +151,7 @@ class RATResults(object):
         return df
 
 
-def example_code():
+def example_code() -> None:
     rat_file_path = os.path.join(
         repo_base_dir, "sample_data", "findarat", "rat_data.json"
     )
@@ -168,7 +168,7 @@ def example_code():
 
     act_data = a.filter_by_address(address="VIC", in_stock=True)
     # LOGGER.info(a.df.head(6))
-    LOGGER.info(act_data.head(6))
-    LOGGER.info(len(act_data.index))
+    LOGGER.info(f"{act_data.head(6)}")
+    LOGGER.info(f"{len(act_data.index)}")
 
     export_to_csv(df=act_data, file_name="rat.csv")

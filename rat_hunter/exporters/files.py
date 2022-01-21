@@ -29,8 +29,8 @@ from rat_hunter.shared.settings import (
 def export_to_csv(
     df: DataFrame,
     file_name: str = "data.csv",
-    output_dir: Union[str, PathLike] = RESULT_DIR,
-):
+    output_dir: Union[str, PathLike] = RESULT_DIR,  # type: ignore
+) -> None:
     """
     Export Pandas dataframe to a CSV file.
 
