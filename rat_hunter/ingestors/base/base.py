@@ -9,7 +9,7 @@ from os import PathLike
 import requests
 from requests.exceptions import HTTPError
 import pandas as pd
-from typing import Optional, Dict, Any, Union
+from typing import Optional, Dict, Any, Union, List
 import os
 import sys
 import json
@@ -48,7 +48,7 @@ class RATResults(object):
         url: str = "https://sparkling-voice-bdd0.pipelabs-au.workers.dev/",
         ssl_verify: bool = True,
         online: bool = True,
-        offline_data: Optional[Dict[Any, Any]] = None,
+        offline_data: Optional[List[Dict[Any, Any]]] = None,
         **kwargs: Dict[str, Any],
     ):
         self.url = url
@@ -63,7 +63,7 @@ class RATResults(object):
         self.raw_df = self.convert_data_to_df(data=self.data)
         self.df = self.augment_base_data(df=self.raw_df)
 
-    def ingest_json_payload(self, url: str, ssl_verify: bool) -> Dict[Any, Any]:
+    def ingest_json_payload(self, url: str, ssl_verify: bool) -> List[Dict[Any, Any]]:
         """
         Take a URL which contains a JSON payload of RAT data and ingest it into
         a dictionary for further processing.
@@ -77,7 +77,7 @@ class RATResults(object):
         Returns:
             data: A dictionary of raw RAT data from the JSON payload.
         """
-        data = {}
+        data: List[Dict[Any, Any]] = [{}]
         try:
             r = requests.get(url=url, verify=ssl_verify)
             r.raise_for_status()
@@ -93,7 +93,7 @@ class RATResults(object):
 
     def save_json_response(
         self,
-        json_data: Dict[Any, Any],
+        json_data: List[Dict[Any, Any]],
         file_name: str = "rat_data.json",
         output_dir: Union[str, PathLike] = DATA_OUTPUT_DIR,  # type: ignore
     ) -> None:
@@ -114,7 +114,7 @@ class RATResults(object):
             json.dump(json_data, json_file, indent=2)
         LOGGER.info(f"Data from: {self.url} saved to {json_file.name}")
 
-    def convert_data_to_df(self, data: Dict[Any, Any]) -> pd.DataFrame:
+    def convert_data_to_df(self, data: List[Dict[Any, Any]]) -> pd.DataFrame:
         """
         Convert the data into a Pandas dataframe
 
