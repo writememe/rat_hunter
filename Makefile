@@ -8,7 +8,7 @@ help:
 	awk -F ':.*?## ' 'NF==2 {printf "\033[35m  %-25s\033[0m %s\n", $$1, $$2}'
 
 all: lint-all tests ## Perform all linting checks, security checks and tests
-lint-all:	black pylama yamllint bandit ## Perform all linting and security checks (black, pylama, yamllint and bandit).
+lint-all:	black pylama yamllint bandit mypy-strict ## Perform all linting and security checks (black, pylama, yamllint, bandit and mypy-strict).
 tests:	pytest pytest-cov ## Perform pytests checks (verbose mode and coverage report).
 
 black: ## Format code using black

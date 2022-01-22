@@ -41,7 +41,7 @@ from rat_hunter.shared.settings import (
 def send_postcode_based_alert(
     postcodes: List[str] = ["3000", "3001"],
     common_search_name: str = "melbourne_area",
-    cc_address_list: List[str] = ["rathunters@somewhere.com"],
+    cc_address_list: List[str] = ["rathunterworldwide@gmail.com"],
     empty_notification: bool = False,
 ) -> None:
     """
@@ -154,20 +154,21 @@ for the outputted CSV file
 send_postcode_based_alert(
     postcodes=darebin_area_postcodes,
     common_search_name="darebin",
-    cc_address_list=["scomo@gmail.com"],
+    cc_address_list=["rathunterworldwide@gmail.com"],
 )
 send_postcode_based_alert(
     postcodes=gippsland_postcodes,
     common_search_name="gippsland",
-    cc_address_list=["scomo@gmail.com"],
+    cc_address_list=["rathunterworldwide@gmail.com"],
+    empty_notification=True,
 )
 send_postcode_based_alert(
     postcodes=gippsland_postcodes,
     common_search_name="geelong",
-    cc_address_list=["scomo@gmail.com"],
+    cc_address_list=["rathunterworldwide@gmail.com"],
 )
 send_postcode_based_alert(
     postcodes=whittlesea_melbourne_area_postcodes,
     common_search_name="whittlesea_melbourne",
-    cc_address_list=["scomo@gmail.com"],
+    cc_address_list=["rathunterworldwide@gmail.com"],
 )
