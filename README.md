@@ -11,6 +11,8 @@ rat_hunter
 
 An automated tool to ingest, augment/transform and export Rapid Antigen Test (RAT) availability data. An overview diagram is shown below:
 
+![Overview](docs/images/rat_hunter_overview.png)
+
 # Table of Contents
 
 - [Terms of Use](#terms-of-use)
