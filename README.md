@@ -13,16 +13,17 @@ An automated tool to ingest, augment/transform and export Rapid Antigen Test (RA
 
 # Table of Contents
 
-- [Code of Conduct](#code-of-conduct)
+- [Terms of Use](#terms-of-use)
 - [Installation](#installation)
 - [Supported Environments](#basic-usage)
 - [Example Usage](#example-usage)
+- [Sample Screenshots](#sample-screenshots)
 - [Project Structure](#project-structure)
 - [Contributors](#contributors)
 
 ## Code of Conduct
 
-Before using this tool, please ensure you read this Code of Conduct, to ensure that you understand the implications of using the tool and agree to behave in an ethical manner.
+Before using this tool, please ensure you read the [Terms of Use](TERMS_OF_USE.md) and use responsibly.
 
 ## Installation
 
@@ -62,6 +63,16 @@ The following examples are available for use:
 | Export to CSV file |Save all Victorian "in stock" RAT locations to a CSV file |[rat_hunter_to_csv_file.py](examples/rat_hunter_to_csv_file.py)|
 | Export to email |Send a friendly HTML email using [yagmail](https://github.com/kootenpv/yagmail) to multiple recipients, based on their postcodes of interest |[rat_hunter_via_gmail.py](examples/rat_hunter_via_gmail.py)|
 
+
+## Sample Screenshots
+
+Using the example script which sends the [RAT results via gmail](examples/rat_hunter_via_gmail.py), below is a screenshot of the `rat_hunter` finding a result:
+
+![Result Found](docs/images/success_no_result_email.png)
+
+And if a result is not found, you can tailor `rat_hunter` to send an email as well:
+
+![No Result Found](docs/images/sample_success_email.png)
 
 ## Project Structure
 

@@ -89,8 +89,6 @@ class RATResults(object):
             LOGGER.error(f"HTTP Error: {http_err}")
         except Exception as e:
             LOGGER.error(f"Other General Exception Error: {e}")
-        print(type(data))
-        print(type(data[0]))
         return data
 
     def save_json_response(
