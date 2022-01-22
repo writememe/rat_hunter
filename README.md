@@ -21,7 +21,7 @@ An automated tool to ingest, augment/transform and export Rapid Antigen Test (RA
 - [Project Structure](#project-structure)
 - [Contributors](#contributors)
 
-## Code of Conduct
+## Terms of Use
 
 Before using this tool, please ensure you read the [Terms of Use](TERMS_OF_USE.md) and use responsibly.
 
