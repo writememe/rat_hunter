@@ -37,7 +37,7 @@ variables
 # variables, rather than what is provided in the .env file using
 # the override=False method.
 # If nothing is set on the system, the values from the .env file are used.
-load_dotenv(dotenv_path=DEFAULT_CRED_ENV, override=True)
+load_dotenv(dotenv_path=DEFAULT_CRED_ENV, override=False)
 
 
 # Specify a list of environmental variables

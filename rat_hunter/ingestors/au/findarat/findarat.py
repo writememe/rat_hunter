@@ -23,7 +23,7 @@ if repo_base_dir not in sys.path:
 from rat_hunter.ingestors.base.base import RATResults
 
 
-class FindARATResults(RATResults):  # type: ignore
+class FindARATResults(RATResults):
     """
     A class for interacting with the Find A RAT backend JSON data
 

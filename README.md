@@ -9,7 +9,7 @@
 rat_hunter
 =======
 
-An automated tool to ingest, augment, transport and export Rapid Antigen Test (RAT) availability data. An overview diagram is shown below:
+An automated tool to ingest, augment/transform and export Rapid Antigen Test (RAT) availability data. An overview diagram is shown below:
 
 # Table of Contents
 
@@ -73,7 +73,7 @@ This tool and project uses some nomenclature, and has been designed in a way tha
 | [ingestors](rat_hunter/ingestors) |The class that ingests the data source, and converts it into a Pandas dataframe, for further operations. |
 | [backend](rat_hunter/backend) |A location to store things like `.env` files for credentials, and possibly in future, database connectors. |
 | [exporters](rat_hunter/exporters) |Exporting the Pandas dataframe of RAT results, such as export to CSV, or send an email. |
-| [helpers](rat_hunter/helpers) |Central location to house centralised settings of functions which are used by other aspects to the tool. Examples are dataframe manipulation, output directories, datestamp manipulation |
+| [shared](rat_hunter/shared) |Central location to house centralised settings of functions which are used by other aspects to the tool. Examples are dataframe manipulation, output directories, datestamp manipulation |
 
 ### Design Decisions
 
@@ -98,14 +98,14 @@ Using this structure, we could end up with a second RAT data source for Australi
 
 Similarly, with the [`exporters`](rat_hunter/exporters/) folder structure:
 
-```
+```console
 rat_hunter/exporters
 ├── __init__.py
 ├── files.py
 └── gmail.py
 ```
 
-It would be great to see some people build a `slack` exporter, or perhaps a `twitter` exporter that people could utilise. So hopefully this gives you insipiration to give it a go :)
+It would be great to see some people build a `slack` exporter, or perhaps a `twitter` exporter that people could utilise. So hopefully this gives you inspiration to give it a go :)
 
 ## Contributors
 
