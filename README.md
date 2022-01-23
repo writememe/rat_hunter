@@ -122,9 +122,4 @@ It would be great to see some people build a `slack` exporter, or perhaps a `twi
 
 ## Contributors
 
-If you would like to contribute to this project, the best thing for now is to do the following:
-
-- Look at the [open issues](https://github.com/writememe/rat_hunter/issues) to see if someone is working on it already, or there is an unassigned issue you might like to work on
-- If not, please raise an issue, before doing any development yourself, so we can discuss and document the intent and approach.
-- Once we've agreed, feel free to work on and submit your pull request. NOTE: You should be able to run [`make lint-all`](Makefile#L11) and not have any CI issues reported back to the console
-- We will review it and approve it or provide feedback as suggested.
+If you would like to contribute to this project, please see the [Contributing documentation](CONTRIBUTING.md).
