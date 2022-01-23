@@ -21,7 +21,7 @@ Even if you aren't in the position that you can contribute your time to this pro
 Suggesting and developing new features
 -----------------------
 
-When you are [creating feature](https://github.com/writememe/rat_hunter/issues), please populate the Github feature template, prior to developing any feature so we can discuss and agree on the feature.
+When you are [creating a feature](https://github.com/writememe/rat_hunter/issues), please populate the Github feature template, prior to developing any feature so we can discuss and agree on the feature.
 
 ## Ideas for features
 
