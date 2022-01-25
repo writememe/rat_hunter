@@ -70,11 +70,11 @@ The following examples are available for use:
 
 Using the example script which sends the [RAT results via gmail](examples/rat_hunter_via_gmail.py), below is a screenshot of the `rat_hunter` finding a result:
 
-![Result Found](docs/images/sample_success_email.png)
+![Result Found](docs/images/success_email.png)
 
 And if a result is not found, you can tailor `rat_hunter` to send an email as well:
 
-![No Result Found](docs/images/sample_no_result_email.png)
+![No Result Found](docs/images/no_result_email.png)
 
 ## Project Structure
 
