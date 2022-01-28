@@ -77,8 +77,7 @@ def authorise_yagmail_client(
     Returns:
         yg: An instantiated object, ready for sending emails.
     """
-    yg = yagmail.SMTP(gmail_acc, gmail_pword)
-    return yg
+    return yagmail.SMTP(gmail_acc, gmail_pword)
 
 
 def drop_df_columns(
@@ -372,26 +371,13 @@ def send_notification(
             subject=subject,
             contents=[body],
         )
-    elif to_address_list and cc_address_list:
-        LOGGER.info(
-            f"Sending email with subject: {subject}. "
-            f"'to' recipients: {', '.join(to_address_list)} and "
-            f"'cc' recipients: {', '.join(cc_address_list)}."
-        )
-        email_result = yag.send(
-            to=to_address_list,
-            cc=cc_address_list,
-            subject=subject,
-            contents=[body],
-        )
     else:
         LOGGER.critical("There is no 'to' or 'cc' recipients, cannot send email.")
         return
-    failed_email = bool(email_result)
-    if not failed_email:
-        LOGGER.info("Email sent successfully.")
-    else:
+    if failed_email := bool(email_result):
         LOGGER.error(f"Email unsuccessful. Error: {email_result}")
+    else:
+        LOGGER.info("Email sent successfully.")
 
 
 def dispatch_html_email(
@@ -445,7 +431,7 @@ def dispatch_html_email(
             subject=email_subject,
             body=html_body,
         )
-    elif df.empty and not empty_notification:
+    elif df.empty:
         LOGGER.warning(
             "RAT results were empty, and sending of email was disabled."
             " No email will be sent."
