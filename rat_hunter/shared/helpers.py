@@ -7,6 +7,8 @@ from datetime import datetime
 from dateutil import tz
 from typing import Any
 
+from pandas import DataFrame
+
 # Import shared settings
 from rat_hunter.shared.settings import (
     LOCAL_TZ,
@@ -166,3 +168,30 @@ def convert_updated_at_to_mins_ago(row: Any) -> int:
     minutes = round(number=(total_seconds / 60))
     LOGGER.debug(f"Diff in mins: {minutes}")
     return minutes
+
+
+def filter_aged_entries(
+    df: DataFrame, column_name: str = "last_updated_mins_ago", minutes: int = 180
+) -> DataFrame:
+    """
+    Filter a dataframe to remove "aged" entries which are considered too old to be a reliable
+    result.
+
+    Args:
+        df: The Pandas dataframe to be modified.
+        column_name: The column name to filter on.
+        minutes: A integer value of entries to keep between 0 and that number.
+            Example: 180 would keep all entries that are between 0 and 180 minutes old.
+    Raises:
+        N/A
+    Returns:
+        df: The Pandas dataframe after it has been modified.
+    """
+    original_entry_count = len(df.index)
+    df = df[(df[column_name] <= minutes)]
+    final_entry_count = len(df.index)
+    removed_entries = original_entry_count - final_entry_count
+    LOGGER.info(
+        f"{removed_entries} entries removed, {final_entry_count} have been retained."
+    )
+    return df
