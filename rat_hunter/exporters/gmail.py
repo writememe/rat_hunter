@@ -28,6 +28,7 @@ from rat_hunter.shared.settings import (
     DEFAULT_CRED_ENV,
     LOCAL_TZ_NAME,
 )  # noqa (import not at top
+from rat_hunter.shared.helpers import filter_aged_entries
 
 """
 Block of code to process the ingestion of environmental
@@ -235,9 +236,9 @@ def parse_results_to_email_content(
     LOGGER.debug(f"Last run parsed metadata: {last_run}")
     LOGGER.debug(f"Local timezone parsed metadata: {local_timezone}")
     LOGGER.debug(f"Search query parsed metadata:{search_query}")
-    total_entries = len(df.index)
-    email_subject = f"RAT Hunter: {total_entries} 🐀 locations found"
     html_df = trim_and_reorder_df_columns(df=df)
+    total_entries = len(html_df.index)
+    email_subject = f"RAT Hunter: {total_entries} 🐀 locations found"
     # Build the HTML table using pretty-html-table
     html_table = build_table(
         df=html_df,
@@ -398,14 +399,17 @@ def dispatch_html_email(
     to_address_list: Optional[List[str]] = [],
     cc_address_list: Optional[List[str]] = [],
     empty_notification: bool = False,
+    minutes: int = 61,
     **kwargs: Dict[str, Any],
 ) -> None:
     """
     High-level function which performs the following:
 
     - Reads in a Pandas dataframe from a specified path
-    - Based on the Pandas dataframe having data, it will send a result email
-    - Based on the Pandas dataframe having no data, it can or can not send an email.
+    - Based on the Pandas dataframe having data and not having "aged entries",
+    it will send a result email
+    - Based on the Pandas dataframe having no data or having "aged entries", it can or can not
+    send an email.
 
     Args:
         df_file_path: The path to the Pandas dataframe which you want to process.
@@ -417,6 +421,8 @@ def dispatch_html_email(
                 ["rathunter@gmail.com", "noreply@rat.org"]
         empty_notification: Boolean to toggle sending an email when no results were found in the
         Pandas dataframe.
+        minutes: A integer value of entries to keep between 0 and that number.
+            Example: 180 would keep all entries that are between 0 and 180 minutes old.
         **kwargs: A dictionary of data which can be used to help formulate the HTML email.
             Example:
                 metadata = {
@@ -430,6 +436,7 @@ def dispatch_html_email(
         N/A
     """
     df = pd.read_csv(df_file_path)
+    df = filter_aged_entries(df=df, minutes=minutes)
     if df.empty and empty_notification:
         email_subject, html_body = compile_no_results_email(kwargs=kwargs)
         send_notification(
