@@ -29,8 +29,7 @@ def add_google_map_address_url(row: Any) -> str:
         google_maps_url: A Google Maps URL which will take you to the RAT location using
         the longitude and latitude from the Pandas row.
     """
-    google_maps_url = f"https://maps.google.com/maps?q={row['lat']},{row['lng']}"
-    return google_maps_url
+    return f"https://maps.google.com/maps?q={row['lat']},{row['lng']}"
 
 
 def add_price_in_dollars(row: Any) -> float:
@@ -44,8 +43,7 @@ def add_price_in_dollars(row: Any) -> float:
     Returns:
         dollars: The price in dollars, calculated from the price in cents.
     """
-    dollars = float(row["priceInCents"] / 100)
-    return dollars
+    return float(row["priceInCents"] / 100)
 
 
 def convert_date_to_local_time(row: Any) -> datetime:
@@ -68,8 +66,7 @@ def convert_date_to_local_time(row: Any) -> datetime:
     # 2022-01-13T02:09:35.458Z
     utc = datetime.strptime(parsed_date, "%Y-%m-%dT%H:%M:%S.%fZ")
     utc = utc.replace(tzinfo=from_zone)
-    local_date = utc.astimezone(to_zone)
-    return local_date
+    return utc.astimezone(to_zone)
 
 
 def convert_updated_at_to_local_time(row: Any) -> datetime:
@@ -92,8 +89,7 @@ def convert_updated_at_to_local_time(row: Any) -> datetime:
     # 2022-01-13T02:09:35.458Z
     utc = datetime.strptime(parsed_date, "%Y-%m-%dT%H:%M:%S.%fZ")
     utc = utc.replace(tzinfo=from_zone)
-    local_update_at = utc.astimezone(to_zone)
-    return local_update_at
+    return utc.astimezone(to_zone)
 
 
 def convert_created_at_to_local_time(row: Any) -> datetime:
@@ -116,8 +112,7 @@ def convert_created_at_to_local_time(row: Any) -> datetime:
     # 2022-01-13T02:09:35.458Z
     utc = datetime.strptime(parsed_date, "%Y-%m-%dT%H:%M:%S.%fZ")
     utc = utc.replace(tzinfo=from_zone)
-    local_created_at = utc.astimezone(to_zone)
-    return local_created_at
+    return utc.astimezone(to_zone)
 
 
 def calculate_diff_in_minutes(
@@ -137,8 +132,7 @@ def calculate_diff_in_minutes(
     """
     time_delta = timestamp - other_time
     total_seconds = time_delta.total_seconds()
-    minutes = round(number=(total_seconds / 60))
-    return minutes
+    return round(number=(total_seconds / 60))
 
 
 def convert_updated_at_to_mins_ago(row: Any) -> int:
