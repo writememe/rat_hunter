@@ -1,5 +1,5 @@
 black==22.3.0
-pylama==8.3.7
+pylama==8.3.8
 yamllint==1.26.3
 bandit==1.7.4
 requests==2.27.1
