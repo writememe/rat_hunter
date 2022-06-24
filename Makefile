@@ -1,4 +1,3 @@
-# This is a comment
 .DEFAULT_GOAL := help
 
 .PHONY: help
