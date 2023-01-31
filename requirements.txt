@@ -3,7 +3,7 @@ pylama==8.3.8
 yamllint==1.26.3
 bandit==1.7.4
 requests==2.27.1
-pandas==1.4.1
+pandas==1.5.3
 python-dotenv==0.20.0
 mypy==0.942
 nox==2022.1.7
